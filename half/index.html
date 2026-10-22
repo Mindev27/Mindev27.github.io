@@ -2,84 +2,244 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>HALF! – Slice It In Half</title>
-<meta name="description" content="HALF! is a mobile game where you slice fruit, food and oddities exactly 50:50.">
-<meta property="og:title" content="HALF! – Slice It In Half">
-<meta property="og:description" content="How close can you get to a perfect 50 : 50?">
-<meta property="og:image" content="https://mindev27.github.io/half/icon.png">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>HALF!</title>
+<meta name="description" content="HALF! is a mobile game about one thing: cutting fruit, food and odd objects exactly 50:50.">
+<meta property="og:title" content="HALF!">
+<meta property="og:description" content="Cut it exactly in half. PERFECT means 50.00%.">
+<meta property="og:image" content="https://mindev27.github.io/half/poster.jpg">
 <link rel="icon" href="icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@600;700&family=Figtree:wght@400;600;700&family=JetBrains+Mono:wght@500;700&family=Noto+Sans+KR:wght@500;700;900&family=Noto+Sans+JP:wght@500;700;900&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#221250;--violet:#4a2a9e;--gold:#ffd640;--coral:#ff5e57;--paper:#ffffff;--soft:#f3efff;--text:#2b1b5e;--muted:#6b5b9a}
-@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#1b1430;--soft:#251c40;--text:#eee8ff;--muted:#b9acdf}}
+/* Layout: the page is cut down the middle. The hero's left half takes the
+   left-slice colour, the right half the right-slice colour, and the knife line
+   runs at exactly 50%. Below it, a measuring section, the full cut list, and screens. */
+:root{
+  --paper:#fbfdff; --ink:#1b1838; --muted:#5d5a79; --line:rgba(27,24,56,.12); --card:#ffffff;
+  --left:#ff5a4e; --right:#14a9cb; --left-wash:#ffe7e3; --right-wash:#dcf5fb; --sun:#f5b300; --blade:#1b1838;
+  --display:"Fredoka","Noto Sans KR","Noto Sans JP","Arial Rounded MT Bold","Trebuchet MS",sans-serif;
+  --body:"Figtree","Noto Sans KR","Noto Sans JP",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0e1020; --ink:#f2f1fa; --muted:#a9a6c4; --line:rgba(242,241,250,.14); --card:#171a30;
+  --left:#ff6f63; --right:#3cc3e2; --left-wash:#331b22; --right-wash:#0f2e38; --sun:#ffc83d; --blade:#f2f1fa; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#0e1020; --ink:#f2f1fa; --muted:#a9a6c4; --line:rgba(242,241,250,.14); --card:#171a30;
+  --left:#ff6f63; --right:#3cc3e2; --left-wash:#331b22; --right-wash:#0f2e38; --sun:#ffc83d; --blade:#f2f1fa; color-scheme:dark}
 *{box-sizing:border-box}
-body{margin:0;font:17px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--text);background:var(--paper)}
-header{background:linear-gradient(180deg,var(--violet),var(--ink));color:#fff;text-align:center;padding:48px 16px 40px}
-header img.icon{width:96px;height:96px;border-radius:22px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
-h1{font-size:56px;line-height:1;margin:18px 0 6px;color:var(--coral);text-shadow:0 4px 0 var(--ink),0 0 0 #fff;letter-spacing:1px}
-.tag{font-size:20px;font-weight:700;margin:0 0 22px}
-.shot{width:min(320px,80vw);border-radius:22px;box-shadow:0 12px 32px rgba(0,0,0,.4)}
-.badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
-.badge{display:inline-block;padding:12px 20px;border-radius:14px;background:#000;color:#fff;font-weight:700;text-decoration:none;min-width:170px}
-.badge.soon{opacity:.6;cursor:default}
-main{max-width:760px;margin:0 auto;padding:32px 16px 48px}
-ul.features{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
-ul.features li{background:var(--soft);border-radius:16px;padding:14px 16px;font-weight:600}
-h2{font-size:22px;margin:32px 0 10px}
-footer{text-align:center;color:var(--muted);font-size:14px;padding:24px 16px 40px}
-footer a{color:inherit}
-select{font:inherit;padding:4px 8px;border-radius:8px}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 17px/1.6 var(--body);overflow-x:hidden}
+a{color:inherit}
+/* Korean and Japanese wrap between words, never inside one. */
+:lang(ko),:lang(ja){word-break:keep-all;line-break:strict}
+:lang(ko) h2,:lang(ja) h2{font-weight:900;letter-spacing:-.01em}
+img,video{max-width:100%;display:block}
+.wrap{max-width:1120px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+h1,h2,h3{font-family:var(--display);font-weight:700;text-wrap:balance;margin:0}
+.eyebrow{font:700 13px/1 var(--mono);letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+:focus-visible{outline:3px solid var(--right);outline-offset:3px;border-radius:6px}
+
+/* ---------- Hero: cut down the middle ---------- */
+.hero{position:relative;background:linear-gradient(90deg,var(--left-wash) 50%,var(--right-wash) 50%);overflow:hidden}
+.hero::before{content:"";position:absolute;top:0;bottom:0;left:calc(50% - 1px);width:2px;background:var(--blade);opacity:.85}
+.bar{position:relative;display:flex;justify-content:space-between;align-items:center;padding-block:18px}
+.brand{display:flex;align-items:center;gap:10px;font:700 18px/1 var(--display);text-decoration:none}
+.brand img{width:34px;height:34px;border-radius:9px}
+select{font:600 14px var(--body);color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:999px;padding:7px 12px}
+.readout{position:relative;display:flex;justify-content:center;margin-top:8px}
+.readout span{font:700 14px/1 var(--mono);letter-spacing:.06em;background:var(--blade);color:var(--paper);padding:8px 12px;border-radius:999px;font-variant-numeric:tabular-nums}
+.mark{position:relative;font:700 clamp(96px,21vw,248px)/.86 var(--display);letter-spacing:-.02em;text-align:center;margin:26px 0 0;height:1em}
+.mark .half{position:absolute;inset:0;display:block}
+.mark .l{color:var(--left);clip-path:inset(0 50% 0 0)}
+.mark .r{color:var(--right);clip-path:inset(0 0 0 50%);transform:translate(.02em,.06em) rotate(1.2deg);transform-origin:50% 0;animation:slip 900ms cubic-bezier(.2,.8,.2,1) 250ms both}
+@keyframes slip{from{transform:none}to{transform:translate(.02em,.06em) rotate(1.2deg)}}
+.lede{position:relative;display:grid;grid-template-columns:1fr auto 1fr;gap:28px;align-items:center;margin-top:34px;padding-bottom:56px}
+.lede .say{justify-self:end;text-align:right;max-width:15em}
+.lede .say h2{font-size:clamp(28px,3.4vw,40px);line-height:1.08}
+.lede .say p{color:var(--muted);margin:12px 0 0}
+.lede .get{justify-self:start;display:flex;flex-direction:column;gap:12px;max-width:260px}
+.store{display:flex;align-items:center;gap:12px;background:var(--blade);color:var(--paper);border-radius:14px;padding:11px 16px;text-decoration:none}
+.store svg{flex:none}
+.store small{display:block;font:600 12px/1.2 var(--body);opacity:.8}
+.store b{display:block;font:700 18px/1.2 var(--body)}
+.store[aria-disabled="true"]{cursor:default}
+.get p{font-size:14px;color:var(--muted);margin:2px 0 0}
+.phone{width:min(260px,64vw);aspect-ratio:9/19.5;border-radius:40px;background:#111;padding:9px;box-shadow:0 26px 60px rgba(14,16,32,.28)}
+.phone video{width:100%;height:100%;object-fit:cover;border-radius:32px;background:#c9fbff}
+
+/* ---------- Measuring ---------- */
+section{padding-block:88px}
+.measure{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:56px;align-items:center}
+.measure h2{font-size:clamp(30px,3.6vw,44px);line-height:1.08;margin-top:12px}
+.measure p{color:var(--muted);max-width:46ch}
+.card{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:22px 24px 26px}
+.split{display:flex;justify-content:space-between;font:700 12px/1 var(--mono);letter-spacing:.1em;color:var(--muted)}
+.nums{display:flex;align-items:center;justify-content:center;gap:18px;font:700 clamp(42px,6vw,64px)/1 var(--display);margin:14px 0 14px;font-variant-numeric:tabular-nums}
+.nums .a{color:var(--left)} .nums .b{color:var(--right)} .nums i{width:5px;height:.9em;background:var(--ink);border-radius:3px}
+.fill{height:10px;border-radius:5px;background:linear-gradient(90deg,var(--left) 50%,var(--right) 50%)}
+.scale{margin-top:28px}
+.ruler{position:relative;height:56px;border-radius:12px;background:repeating-linear-gradient(90deg,var(--line) 0 1px,transparent 1px 5%);border:1px solid var(--line)}
+.zone{position:absolute;top:0;bottom:0;border-radius:10px}
+/* the ruler spans 30% to 70%, so 1 point = 2.5% of its width */
+.z-pass{left:0;right:0;background:color-mix(in srgb,var(--right) 10%,transparent)}
+.z-great{left:37.5%;right:37.5%;background:color-mix(in srgb,var(--right) 26%,transparent)}
+.z-perfect{left:47.5%;right:47.5%;background:var(--sun)}
+.ticks{display:flex;justify-content:space-between;font:500 12px/1 var(--mono);color:var(--muted);margin-top:8px;font-variant-numeric:tabular-nums}
+.legend{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;margin-top:18px}
+.legend div{font:600 14px/1.35 var(--body)}
+.legend b{display:block;font:700 13px/1.2 var(--mono);letter-spacing:.06em}
+.legend .p b{color:var(--sun)} .legend .g b{color:var(--right)} .legend .s b{color:var(--muted)}
+
+/* ---------- The cut list ---------- */
+.list{border-top:1px solid var(--line)}
+.list-head{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:12px 32px}
+.list-head h2{font-size:clamp(34px,4.4vw,56px);line-height:1}
+.list-head p{color:var(--muted);max-width:40ch;margin:0}
+.sets{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:28px 22px;margin-top:40px}
+.set h3{font:700 13px/1.2 var(--mono);letter-spacing:.1em;text-transform:uppercase;display:flex;justify-content:space-between;gap:8px;padding-bottom:10px;border-bottom:2px solid var(--ink)}
+.set h3 span{color:var(--muted);font-variant-numeric:tabular-nums}
+.set ul{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:5px;font:600 15px/1.3 var(--body)}
+.set li{min-width:0;overflow-wrap:anywhere}
+
+/* ---------- Screens ---------- */
+.screens{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:28px;margin-top:40px}
+.screens figure{margin:0}
+.screens img{width:100%;aspect-ratio:9/14;object-fit:cover;object-position:top;border-radius:20px;border:1px solid var(--line)}
+.screens figcaption{margin-top:14px}
+.screens b{display:block;font:700 20px/1.2 var(--display)}
+.screens span{color:var(--muted);font-size:15px}
+
+footer{border-top:1px solid var(--line);padding-block:40px 48px;display:flex;flex-wrap:wrap;justify-content:space-between;gap:16px;color:var(--muted);font-size:15px}
+footer p{margin:0;max-width:60ch}
+
+@media (max-width:900px){
+  .lede{grid-template-columns:1fr;justify-items:center;gap:26px}
+  .lede .say,.lede .get{justify-self:center;text-align:center;align-items:stretch}
+  .lede .say{background:var(--paper);padding:18px 20px;border-radius:18px;max-width:420px}
+  .lede .get{width:min(320px,100%)}
+  .measure{grid-template-columns:1fr;gap:36px}
+  .sets{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .screens{grid-template-columns:1fr;max-width:380px;margin-inline:auto}
+}
+@media (max-width:520px){.sets{grid-template-columns:repeat(2,minmax(0,1fr))}.legend{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.mark .r{animation:none}.phone video{display:none}.phone{background:#111 url(poster.jpg) center/cover}}
 </style>
 </head>
 <body>
-<header>
-  <img class="icon" src="icon.png" alt="HALF! app icon">
-  <h1>HALF!</h1>
-  <p class="tag" data-i="tag">How close can you get to a perfect 50 : 50?</p>
-  <img class="shot" src="slice.gif" alt="A tomato sliced exactly in half" loading="lazy">
-  <div class="badges">
-    <!-- Replace href and drop the "soon" class once the store pages are live. -->
-    <a class="badge soon" id="play" data-i="play">Google Play – coming soon</a>
-    <a class="badge soon" id="ios" data-i="ios">App Store – coming soon</a>
+<header class="hero">
+  <div class="wrap">
+    <div class="bar">
+      <a class="brand" href="./"><img src="icon.png" alt="">HALF!</a>
+      <select id="lang" aria-label="Language">
+        <option value="en">English</option><option value="ko">한국어</option><option value="ja">日本語</option>
+        <option value="es">Español</option><option value="pt">Português</option><option value="de">Deutsch</option><option value="fr">Français</option>
+      </select>
+    </div>
+    <div class="readout"><span>50.00% | 50.00%</span></div>
+    <h1 class="mark" aria-label="HALF!"><span class="half l" aria-hidden="true">HALF!</span><span class="half r" aria-hidden="true">HALF!</span></h1>
+    <div class="lede">
+      <div class="say">
+        <h2 data-i="tag">Cut it exactly in half.</h2>
+        <p data-i="sub">Hold, slide, release. Every cut is measured by real volume.</p>
+      </div>
+      <div class="phone"><video src="play.mp4" poster="poster.jpg" autoplay muted loop playsinline aria-label="Gameplay"></video></div>
+      <div class="get">
+        <!-- When a store page is live: set href, remove aria-disabled. -->
+        <a class="store" aria-disabled="true"><svg width="22" height="24" viewBox="0 0 22 24" aria-hidden="true"><path fill="currentColor" d="M1 1.2 12.4 12 1 22.8c-.4-.2-.6-.7-.6-1.2V2.4c0-.5.2-1 .6-1.2Zm13 9.3L3.2.4 16.6 8.1l-2.6 2.4Zm0 3 2.6 2.4L3.2 23.6 14 13.5Zm4.4-4.4 3 1.7c.8.5.8 1.8 0 2.3l-3 1.7-2.8-2.8 2.8-2.9Z"/></svg><span><small data-i="soon">Coming soon on</small><b>Google Play</b></span></a>
+        <a class="store" aria-disabled="true"><svg width="20" height="24" viewBox="0 0 20 24" aria-hidden="true"><path fill="currentColor" d="M16.4 12.7c0-3 2.5-4.5 2.6-4.6-1.4-2.1-3.6-2.4-4.4-2.4-1.9-.2-3.6 1.1-4.6 1.1-.9 0-2.4-1.1-3.9-1-2 0-3.9 1.2-4.9 3-2.1 3.7-.5 9.1 1.5 12.1 1 1.5 2.2 3.1 3.8 3 1.5-.1 2.1-1 3.9-1s2.3 1 3.9 1c1.6 0 2.7-1.5 3.6-3 1.1-1.7 1.6-3.4 1.6-3.5 0 0-3.1-1.2-3.1-4.7ZM13.4 3.8c.8-1 1.4-2.4 1.2-3.8-1.2.1-2.6.8-3.5 1.8-.8.9-1.4 2.3-1.2 3.7 1.3.1 2.7-.7 3.5-1.7Z"/></svg><span><small data-i="soon">Coming soon on</small><b>App Store</b></span></a>
+        <p data-i="free">Free, with optional ads. Plays offline.</p>
+      </div>
+    </div>
   </div>
 </header>
-<main>
-  <p data-i="intro">Hold, slide and release to bring the knife down. Every cut is measured by real volume, so a PERFECT really is half and half.</p>
-  <ul class="features">
-    <li data-i="f1">51 things to cut: fruit, sweets, kitchen classics and oddities</li>
-    <li data-i="f2">Twist stages: NO GUIDE, RUSH and WOBBLE</li>
-    <li data-i="f3">Collect sets and rank up to Master Chef</li>
-    <li data-i="f4">Unlock blades: Light Saber, Katana, Damascus…</li>
-    <li data-i="f5">Daily quests and a Daily Cut</li>
-    <li data-i="f6">Short sessions, play offline</li>
-  </ul>
-  <h2 data-i="supportTitle">Support</h2>
-  <p data-i="support">Questions or problems? Contact us through the support contact on the HALF! store listing.</p>
+
+<main class="wrap">
+  <section class="measure">
+    <div>
+      <div class="eyebrow" data-i="mEyebrow">How a cut is judged</div>
+      <h2 data-i="mTitle">Measured by volume, not by eye.</h2>
+      <p data-i="mBody">The two pieces are weighed by their real 3D volume. A tomato cut through its middle reads 50.00% to 50.00%. Drift one point to either side and it is still PERFECT; five points is GREAT; past the limit, the stage restarts.</p>
+    </div>
+    <div class="card">
+      <div class="split"><span data-i="yourCut">YOUR CUT</span><span data-i="cutOf">CUT 1 / 4</span></div>
+      <div class="nums"><span class="a">50.00%</span><i></i><span class="b">50.00%</span></div>
+      <div class="fill"></div>
+      <div class="scale">
+        <div class="ruler" role="img" aria-label="Scale from 30% to 70%"><div class="zone z-pass"></div><div class="zone z-great"></div><div class="zone z-perfect"></div></div>
+        <div class="ticks"><span>30%</span><span>40%</span><span>50%</span><span>60%</span><span>70%</span></div>
+        <div class="legend">
+          <div class="p"><b data-i="lpName">PERFECT ±1%</b><span data-i="lp">49.00 to 51.00</span></div>
+          <div class="g"><b data-i="lgName">GREAT ±5%</b><span data-i="lg">45.00 to 55.00</span></div>
+          <div class="s"><b data-i="lsName">PASS ±20%</b><span data-i="ls">Wider in the first stages</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="list">
+    <div class="list-head">
+      <h2 data-i="listTitle">51 things to cut.</h2>
+      <p data-i="listBody">Six sets, from the garden to things that were never meant to be food. Each one stops somewhere new on the belt.</p>
+    </div>
+    <div class="sets" id="sets"></div>
+  </section>
+
+  <section class="list">
+    <div class="list-head">
+      <h2 data-i="moreTitle">More than one cut.</h2>
+      <p data-i="moreBody">Short stages, daily goals and things to unlock, without timers or energy.</p>
+    </div>
+    <div class="screens">
+      <figure><img src="shot-twist.jpg" alt="" loading="lazy"><figcaption><b data-i="s1">Twist stages</b><span data-i="s1s">No Guide hides the cut line. Rush keeps the belt moving. Wobble rocks the item.</span></figcaption></figure>
+      <figure><img src="shot-blades.jpg" alt="" loading="lazy"><figcaption><b data-i="s2">Eight blades</b><span data-i="s2s">From the chef's knife to a light saber, bought with coins from perfect cuts.</span></figcaption></figure>
+      <figure><img src="shot-scenes.jpg" alt="" loading="lazy"><figcaption><b data-i="s3">Seven kitchens</b><span data-i="s3s">Same cut, new scene: pastel sky to a midnight diner.</span></figcaption></figure>
+    </div>
+  </section>
+
+  <footer>
+    <p><b data-i="supportTitle">Support</b> · <span data-i="support">Questions or problems? Use the support contact on the HALF! store listing.</span></p>
+    <p><a href="privacy.html" data-i="privacy">Privacy Policy</a> · © 2026 Min_27</p>
+  </footer>
 </main>
-<footer>
-  <label><span data-i="lang">Language</span>
-    <select id="lang">
-      <option value="en">English</option><option value="ko">한국어</option><option value="ja">日本語</option><option value="es">Español</option>
-      <option value="pt">Português</option><option value="de">Deutsch</option><option value="fr">Français</option>
-    </select>
-  </label>
-  <p><a href="privacy.html" data-i="privacy">Privacy Policy</a> · © 2026 Min_27</p>
-</footer>
+
 <script>
-const T={
-ko:{tag:"정확히 50 : 50으로 자를 수 있나요?",play:"Google Play – 곧 출시",ios:"App Store – 곧 출시",intro:"누르고, 밀고, 떼면 칼이 내려갑니다. 모든 절단은 실제 부피로 측정돼서, PERFECT는 정말로 딱 반입니다.",f1:"자를 수 있는 51가지: 과일, 디저트, 주방 요리, 별난 물건",f2:"변형 스테이지: 가이드 없음, 러시, 흔들흔들",f3:"세트를 모으고 마스터 셰프까지 랭크업",f4:"칼 해금: 광선검, 카타나, 다마스커스…",f5:"일일 퀘스트와 데일리 컷",f6:"짧은 플레이, 오프라인 가능",supportTitle:"지원",support:"문의나 문제가 있으면 HALF! 스토어 페이지의 지원 연락처로 연락해 주세요.",lang:"언어",privacy:"개인정보처리방침"},
-ja:{tag:"どこまでパーフェクトな50 : 50に近づける？",play:"Google Play – 近日公開",ios:"App Store – 近日公開",intro:"長押しして、スライドして、離すとナイフが下ります。すべてのカットは実際の体積で計測。パーフェクトは本当にぴったり半分です。",f1:"切れるアイテムは51種類：果物、スイーツ、料理、ふしぎな物",f2:"ルールが変わるステージ：ガイドなし、ラッシュ、ゆらゆら",f3:"セットを集めてマスターシェフへ",f4:"ナイフを解放：ライトセーバー、刀、ダマスカス…",f5:"今日のクエストとデイリーカット",f6:"短時間で遊べて、オフラインでもOK",supportTitle:"サポート",support:"ご質問や不具合は、ストアページのサポート窓口までご連絡ください。",lang:"言語",privacy:"プライバシーポリシー"},
-es:{tag:"¿Qué tan cerca llegas al 50 : 50 perfecto?",play:"Google Play – muy pronto",ios:"App Store – muy pronto",intro:"Mantén, desliza y suelta para bajar el cuchillo. Cada corte se mide por volumen real: un PERFECTO es de verdad mitad y mitad.",f1:"51 cosas para cortar: frutas, dulces, cocina y rarezas",f2:"Niveles con giros: SIN GUÍA, PRISA y TEMBLOR",f3:"Completa sets y llega a Chef Maestro",f4:"Desbloquea cuchillos: Sable de luz, Katana, Damasco…",f5:"Misiones diarias y un Corte Diario",f6:"Partidas cortas, sin conexión",supportTitle:"Soporte",support:"¿Dudas o problemas? Escríbenos al contacto de soporte de la ficha de HALF! en la tienda.",lang:"Idioma",privacy:"Política de privacidad"},
-pt:{tag:"Quão perto você chega do 50 : 50 perfeito?",play:"Google Play – em breve",ios:"App Store – em breve",intro:"Segure, deslize e solte para descer a faca. Cada corte é medido pelo volume real: um PERFEITO é mesmo metade e metade.",f1:"51 itens para cortar: frutas, doces, cozinha e esquisitices",f2:"Fases com reviravoltas: SEM GUIA, PRESSA e BALANÇO",f3:"Complete conjuntos e chegue a Chef Mestre",f4:"Libere facas: Sabre de luz, Katana, Damasco…",f5:"Missões diárias e um Corte Diário",f6:"Partidas rápidas, jogue offline",supportTitle:"Suporte",support:"Dúvidas ou problemas? Fale com a gente pelo contato de suporte da página do HALF! na loja.",lang:"Idioma",privacy:"Política de privacidade"},
-de:{tag:"Wie nah kommst du an perfekte 50 : 50?",play:"Google Play – bald verfügbar",ios:"App Store – bald verfügbar",intro:"Halten, ziehen, loslassen – und das Messer fällt. Jeder Schnitt wird nach echtem Volumen gemessen: PERFEKT heißt wirklich halb und halb.",f1:"51 Dinge zum Schneiden: Obst, Süßes, Küche und Kurioses",f2:"Stufen mit neuen Regeln: OHNE HILFE, EILE und WACKELN",f3:"Sets sammeln und zum Meisterkoch aufsteigen",f4:"Messer freischalten: Lichtschwert, Katana, Damaszener…",f5:"Tägliche Aufgaben und ein Tagesschnitt",f6:"Kurze Runden, offline spielbar",supportTitle:"Support",support:"Fragen oder Probleme? Nutze den Support-Kontakt auf der Store-Seite von HALF!.",lang:"Sprache",privacy:"Datenschutzerklärung"},
-fr:{tag:"Jusqu'où iras-tu vers le 50 : 50 parfait ?",play:"Google Play – bientôt",ios:"App Store – bientôt",intro:"Appuie, glisse et relâche pour abaisser le couteau. Chaque coupe est mesurée au volume réel : un PARFAIT, c'est vraiment moitié-moitié.",f1:"51 objets à couper : fruits, douceurs, cuisine et curiosités",f2:"Niveaux à twist : SANS GUIDE, RUSH et BASCULE",f3:"Complète des sets et deviens Grand Chef",f4:"Débloque des couteaux : Sabre laser, Katana, Damas…",f5:"Quêtes du jour et Coupe du jour",f6:"Parties courtes, hors ligne",supportTitle:"Support",support:"Une question ou un problème ? Contacte-nous via le contact support de la fiche HALF! sur le store.",lang:"Langue",privacy:"Politique de confidentialité"}
-};
-const EN={};document.querySelectorAll('[data-i]').forEach(e=>EN[e.dataset.i]=e.textContent);
-function apply(code){const t=T[code]||EN;document.documentElement.lang=code;document.querySelectorAll('[data-i]').forEach(e=>e.textContent=t[e.dataset.i]||EN[e.dataset.i]);document.getElementById('lang').value=code;}
-let pick='en';try{pick=localStorage.getItem('half-lang')||''}catch(e){}
-if(!pick){const nav=(navigator.language||'en').slice(0,2);pick=T[nav]?nav:'en'}
+const COPY = {"ko": {"lpName": "퍼펙트 ±1%", "lgName": "그레이트 ±5%", "tag": "정확히 반으로 잘라보세요.", "sub": "누르고, 밀고, 떼세요. 모든 컷은 실제 부피로 측정됩니다.", "soon": "곧 출시", "free": "무료, 광고는 선택. 오프라인 플레이 가능.", "mEyebrow": "판정 방식", "mTitle": "눈대중이 아니라 부피로 잽니다.", "mBody": "잘린 두 조각을 실제 3D 부피로 비교합니다. 토마토를 정확히 가운데로 자르면 50.00% 대 50.00%. 한쪽으로 1%까지는 PERFECT, 5%까지는 GREAT, 허용치를 넘으면 스테이지를 다시 합니다.", "yourCut": "내 절단", "cutOf": "1 / 4 컷", "lp": "49.00 ~ 51.00", "lg": "45.00 ~ 55.00", "lsName": "통과 ±20%", "ls": "초반 스테이지는 더 넉넉해요", "listTitle": "자를 수 있는 51가지.", "listBody": "텃밭부터 원래 음식이 아닌 물건까지 여섯 세트. 벨트 위 멈추는 위치가 매번 달라요.", "moreTitle": "자르는 것 말고도.", "moreBody": "짧은 스테이지, 매일의 목표, 해금할 것들. 타이머도 에너지도 없어요.", "s1": "변형 스테이지", "s1s": "가이드 없음은 절단선을 숨기고, 러시는 벨트가 계속 움직이고, 흔들흔들은 물체가 흔들려요.", "s2": "칼 8종", "s2s": "셰프 나이프부터 광선검까지, 퍼펙트로 모은 코인으로 사요.", "s3": "주방 7곳", "s3s": "같은 컷, 새로운 배경. 파스텔 하늘부터 심야 식당까지.", "supportTitle": "지원", "support": "문의나 문제가 있으면 HALF! 스토어 페이지의 지원 연락처를 이용해 주세요.", "privacy": "개인정보처리방침"}, "ja": {"lpName": "パーフェクト ±1%", "lgName": "グレート ±5%", "tag": "ぴったり半分に切ろう。", "sub": "長押し、スライド、離す。すべてのカットを実際の体積で計測します。", "soon": "近日公開", "free": "無料（広告は任意）。オフラインでも遊べます。", "mEyebrow": "判定のしくみ", "mTitle": "目分量ではなく、体積で測る。", "mBody": "切った2つのピースを実際の3D体積で比べます。トマトを真ん中で切れば50.00%対50.00%。片側に1%まではパーフェクト、5%まではグレート、許容を超えるとステージやり直しです。", "yourCut": "あなたのカット", "cutOf": "カット 1 / 4", "lp": "49.00〜51.00", "lg": "45.00〜55.00", "lsName": "クリア ±20%", "ls": "序盤のステージはもっと広め", "listTitle": "切れるアイテムは51種類。", "listBody": "菜園から、本来は食べ物ではない物まで6つのセット。ベルトの上で毎回ちがう位置に止まります。", "moreTitle": "カットだけじゃない。", "moreBody": "短いステージ、毎日の目標、解放できるもの。タイマーもスタミナもありません。", "s1": "ルールが変わるステージ", "s1s": "ガイドなしは線が見えず、ラッシュはベルトが止まらず、ゆらゆらはアイテムが揺れます。", "s2": "ナイフ8種", "s2s": "牛刀からライトセーバーまで、パーフェクトで集めたコインで買えます。", "s3": "キッチン7つ", "s3s": "同じカット、新しい背景。パステルスカイから深夜食堂まで。", "supportTitle": "サポート", "support": "ご質問や不具合は、HALF!ストアページのサポート窓口をご利用ください。", "privacy": "プライバシーポリシー"}, "es": {"lpName": "PERFECTO ±1%", "lgName": "GENIAL ±5%", "tag": "Córtalo justo por la mitad.", "sub": "Mantén, desliza y suelta. Cada corte se mide por su volumen real.", "soon": "Muy pronto en", "free": "Gratis, anuncios opcionales. Se juega sin conexión.", "mEyebrow": "Cómo se juzga un corte", "mTitle": "Se mide por volumen, no a ojo.", "mBody": "Las dos piezas se comparan por su volumen 3D real. Un tomate cortado por el centro marca 50.00% a 50.00%. Hasta un punto de desvío sigue siendo PERFECTO, cinco es GENIAL y pasado el límite el nivel empieza de nuevo.", "yourCut": "TU CORTE", "cutOf": "CORTE 1 / 4", "lp": "de 49.00 a 51.00", "lg": "de 45.00 a 55.00", "lsName": "VÁLIDO ±20%", "ls": "Más amplio en los primeros niveles", "listTitle": "51 cosas para cortar.", "listBody": "Seis sets, del huerto a objetos que nunca fueron comida. Cada uno se detiene en un sitio nuevo de la cinta.", "moreTitle": "Más que un corte.", "moreBody": "Niveles cortos, metas diarias y cosas que desbloquear, sin temporizadores ni energía.", "s1": "Niveles con giros", "s1s": "Sin guía oculta la línea. Prisa no detiene la cinta. Temblor hace oscilar el objeto.", "s2": "Ocho cuchillos", "s2s": "Del cuchillo de chef al sable de luz, con monedas de cortes perfectos.", "s3": "Siete cocinas", "s3s": "Mismo corte, nueva escena: del cielo pastel a una cena de medianoche.", "supportTitle": "Soporte", "support": "¿Dudas o problemas? Usa el contacto de soporte de la ficha de HALF! en la tienda.", "privacy": "Política de privacidad"}, "pt": {"lpName": "PERFEITO ±1%", "lgName": "ÓTIMO ±5%", "tag": "Corte bem no meio.", "sub": "Segure, deslize e solte. Cada corte é medido pelo volume real.", "soon": "Em breve no", "free": "Grátis, anúncios opcionais. Jogue offline.", "mEyebrow": "Como o corte é avaliado", "mTitle": "Medido pelo volume, não no olho.", "mBody": "As duas partes são comparadas pelo volume 3D real. Um tomate cortado no meio marca 50.00% a 50.00%. Até um ponto de desvio ainda é PERFEITO, cinco é ÓTIMO e, passando do limite, a fase recomeça.", "yourCut": "SEU CORTE", "cutOf": "CORTE 1 / 4", "lp": "de 49.00 a 51.00", "lg": "de 45.00 a 55.00", "lsName": "PASSOU ±20%", "ls": "Mais folgado nas primeiras fases", "listTitle": "51 coisas para cortar.", "listBody": "Seis conjuntos, da horta a objetos que nunca foram comida. Cada um para num ponto diferente da esteira.", "moreTitle": "Mais do que um corte.", "moreBody": "Fases curtas, metas diárias e coisas para liberar, sem cronômetro nem energia.", "s1": "Fases com reviravoltas", "s1s": "Sem guia esconde a linha. Pressa não para a esteira. Balanço faz o item balançar.", "s2": "Oito facas", "s2s": "Da faca de chef ao sabre de luz, com moedas de cortes perfeitos.", "s3": "Sete cozinhas", "s3s": "Mesmo corte, novo cenário: do céu pastel à lanchonete da meia-noite.", "supportTitle": "Suporte", "support": "Dúvidas ou problemas? Use o contato de suporte da página do HALF! na loja.", "privacy": "Política de privacidade"}, "de": {"lpName": "PERFEKT ±1%", "lgName": "SUPER ±5%", "tag": "Genau halbieren.", "sub": "Halten, ziehen, loslassen. Jeder Schnitt wird nach echtem Volumen gemessen.", "soon": "Bald bei", "free": "Kostenlos, Werbung freiwillig. Offline spielbar.", "mEyebrow": "So wird ein Schnitt bewertet", "mTitle": "Gemessen am Volumen, nicht nach Augenmaß.", "mBody": "Beide Hälften werden nach ihrem echten 3D-Volumen verglichen. Eine mittig geschnittene Tomate ergibt 50.00% zu 50.00%. Bis zu einem Punkt Abweichung ist es PERFEKT, fünf Punkte sind SUPER, jenseits des Limits beginnt die Stufe neu.", "yourCut": "DEIN SCHNITT", "cutOf": "SCHNITT 1 / 4", "lp": "49.00 bis 51.00", "lg": "45.00 bis 55.00", "lsName": "OK ±20%", "ls": "In den ersten Stufen großzügiger", "listTitle": "51 Dinge zum Schneiden.", "listBody": "Sechs Sets, vom Gemüsegarten bis zu Dingen, die nie Essen waren. Jedes hält an einer neuen Stelle auf dem Band.", "moreTitle": "Mehr als ein Schnitt.", "moreBody": "Kurze Stufen, tägliche Ziele und Freischaltbares, ohne Timer oder Energie.", "s1": "Stufen mit neuen Regeln", "s1s": "Ohne Hilfe verbirgt die Linie. Eile hält das Band nicht an. Wackeln bringt das Teil ins Schwanken.", "s2": "Acht Messer", "s2s": "Vom Kochmesser bis zum Lichtschwert, bezahlt mit Münzen aus perfekten Schnitten.", "s3": "Sieben Küchen", "s3s": "Gleicher Schnitt, neue Szene: vom Pastellhimmel bis zum Mitternachtsdiner.", "supportTitle": "Support", "support": "Fragen oder Probleme? Nutze den Support-Kontakt auf der Store-Seite von HALF!.", "privacy": "Datenschutzerklärung"}, "fr": {"lpName": "PARFAIT ±1%", "lgName": "GÉNIAL ±5%", "tag": "Coupe-le pile en deux.", "sub": "Appuie, glisse, relâche. Chaque coupe est mesurée au volume réel.", "soon": "Bientôt sur", "free": "Gratuit, pubs facultatives. Jouable hors ligne.", "mEyebrow": "Comment une coupe est jugée", "mTitle": "Mesuré au volume, pas à l'œil.", "mBody": "Les deux morceaux sont comparés selon leur vrai volume 3D. Une tomate coupée en son centre donne 50.00% contre 50.00%. Jusqu'à un point d'écart, c'est PARFAIT ; cinq points, GÉNIAL ; au-delà de la limite, le niveau recommence.", "yourCut": "TA COUPE", "cutOf": "COUPE 1 / 4", "lp": "de 49.00 à 51.00", "lg": "de 45.00 à 55.00", "lsName": "RÉUSSI ±20%", "ls": "Plus large dans les premiers niveaux", "listTitle": "51 objets à couper.", "listBody": "Six sets, du potager à des objets qui n'ont jamais été de la nourriture. Chacun s'arrête à un endroit différent du tapis.", "moreTitle": "Plus qu'une coupe.", "moreBody": "Des niveaux courts, des objectifs du jour et des choses à débloquer, sans chrono ni énergie.", "s1": "Niveaux à twist", "s1s": "Sans guide cache la ligne. Rush ne stoppe pas le tapis. Bascule fait osciller l'objet.", "s2": "Huit couteaux", "s2s": "Du couteau de chef au sabre laser, achetés avec les pièces des coupes parfaites.", "s3": "Sept cuisines", "s3s": "Même coupe, nouveau décor : du ciel pastel au diner de minuit.", "supportTitle": "Support", "support": "Une question ou un problème ? Utilise le contact support de la fiche HALF! sur le store.", "privacy": "Politique de confidentialité"}};
+const SETS = [{"name": {"en": "GARDEN", "ko": "텃밭", "ja": "菜園", "es": "HUERTO", "pt": "HORTA", "de": "GARTEN", "fr": "POTAGER"}, "items": [{"en": "TOMATO", "ko": "토마토", "ja": "トマト", "es": "TOMATE", "pt": "TOMATE", "de": "TOMATE", "fr": "TOMATE"}, {"en": "ONION", "ko": "양파", "ja": "タマネギ", "es": "CEBOLLA", "pt": "CEBOLA", "de": "ZWIEBEL", "fr": "OIGNON"}, {"en": "POTATO", "ko": "감자", "ja": "ジャガイモ", "es": "PATATA", "pt": "BATATA", "de": "KARTOFFEL", "fr": "POMME DE TERRE"}, {"en": "GINGER", "ko": "생강", "ja": "ショウガ", "es": "JENGIBRE", "pt": "GENGIBRE", "de": "INGWER", "fr": "GINGEMBRE"}, {"en": "CUCUMBER", "ko": "오이", "ja": "キュウリ", "es": "PEPINO", "pt": "PEPINO", "de": "GURKE", "fr": "CONCOMBRE"}, {"en": "BELL PEPPER", "ko": "파프리카", "ja": "パプリカ", "es": "PIMIENTO", "pt": "PIMENTÃO", "de": "PAPRIKA", "fr": "POIVRON"}, {"en": "PUMPKIN", "ko": "호박", "ja": "カボチャ", "es": "CALABAZA", "pt": "ABÓBORA", "de": "KÜRBIS", "fr": "CITROUILLE"}, {"en": "CARROT", "ko": "당근", "ja": "ニンジン", "es": "ZANAHORIA", "pt": "CENOURA", "de": "KAROTTE", "fr": "CAROTTE"}, {"en": "CORN", "ko": "옥수수", "ja": "トウモロコシ", "es": "MAÍZ", "pt": "MILHO", "de": "MAIS", "fr": "MAÏS"}, {"en": "MUSHROOM", "ko": "버섯", "ja": "キノコ", "es": "CHAMPIÑÓN", "pt": "COGUMELO", "de": "PILZ", "fr": "CHAMPIGNON"}, {"en": "EGGPLANT", "ko": "가지", "ja": "ナス", "es": "BERENJENA", "pt": "BERINJELA", "de": "AUBERGINE", "fr": "AUBERGINE"}]}, {"name": {"en": "ORCHARD", "ko": "과수원", "ja": "果樹園", "es": "FRUTAL", "pt": "POMAR", "de": "OBSTGARTEN", "fr": "VERGER"}, "items": [{"en": "PEAR", "ko": "배", "ja": "洋ナシ", "es": "PERA", "pt": "PERA", "de": "BIRNE", "fr": "POIRE"}, {"en": "WATERMELON", "ko": "수박", "ja": "スイカ", "es": "SANDÍA", "pt": "MELANCIA", "de": "WASSERMELONE", "fr": "PASTÈQUE"}, {"en": "BANANA", "ko": "바나나", "ja": "バナナ", "es": "PLÁTANO", "pt": "BANANA", "de": "BANANE", "fr": "BANANE"}, {"en": "PINEAPPLE", "ko": "파인애플", "ja": "パイナップル", "es": "PIÑA", "pt": "ABACAXI", "de": "ANANAS", "fr": "ANANAS"}, {"en": "AVOCADO", "ko": "아보카도", "ja": "アボカド", "es": "AGUACATE", "pt": "ABACATE", "de": "AVOCADO", "fr": "AVOCAT"}, {"en": "KIWI", "ko": "키위", "ja": "キウイ", "es": "KIWI", "pt": "KIWI", "de": "KIWI", "fr": "KIWI"}, {"en": "STAR FRUIT", "ko": "스타프루트", "ja": "スターフルーツ", "es": "CARAMBOLA", "pt": "CARAMBOLA", "de": "STERNFRUCHT", "fr": "CARAMBOLE"}, {"en": "DRAGON FRUIT", "ko": "용과", "ja": "ドラゴンフルーツ", "es": "PITAYA", "pt": "PITAYA", "de": "DRACHENFRUCHT", "fr": "FRUIT DU DRAGON"}, {"en": "POMEGRANATE", "ko": "석류", "ja": "ザクロ", "es": "GRANADA", "pt": "ROMÃ", "de": "GRANATAPFEL", "fr": "GRENADE"}, {"en": "COCONUT", "ko": "코코넛", "ja": "ココナッツ", "es": "COCO", "pt": "COCO", "de": "KOKOSNUSS", "fr": "NOIX DE COCO"}, {"en": "DURIAN", "ko": "두리안", "ja": "ドリアン", "es": "DURIÁN", "pt": "DURIAN", "de": "DURIAN", "fr": "DURIAN"}]}, {"name": {"en": "KITCHEN", "ko": "주방", "ja": "キッチン", "es": "COCINA", "pt": "COZINHA", "de": "KÜCHE", "fr": "CUISINE"}, "items": [{"en": "CHICKEN", "ko": "치킨", "ja": "チキン", "es": "POLLO", "pt": "FRANGO", "de": "HÄHNCHEN", "fr": "POULET"}, {"en": "FISH", "ko": "생선", "ja": "魚", "es": "PESCADO", "pt": "PEIXE", "de": "FISCH", "fr": "POISSON"}, {"en": "STEAK", "ko": "스테이크", "ja": "ステーキ", "es": "FILETE", "pt": "BIFE", "de": "STEAK", "fr": "STEAK"}, {"en": "CHEESE", "ko": "치즈", "ja": "チーズ", "es": "QUESO", "pt": "QUEIJO", "de": "KÄSE", "fr": "FROMAGE"}, {"en": "BREAD", "ko": "빵", "ja": "パン", "es": "PAN", "pt": "PÃO", "de": "BROT", "fr": "PAIN"}, {"en": "CROISSANT", "ko": "크루아상", "ja": "クロワッサン", "es": "CRUASÁN", "pt": "CROISSANT", "de": "CROISSANT", "fr": "CROISSANT"}, {"en": "FRIED EGG", "ko": "계란프라이", "ja": "目玉焼き", "es": "HUEVO FRITO", "pt": "OVO FRITO", "de": "SPIEGELEI", "fr": "ŒUF AU PLAT"}, {"en": "SUSHI", "ko": "초밥", "ja": "寿司", "es": "SUSHI", "pt": "SUSHI", "de": "SUSHI", "fr": "SUSHI"}]}, {"name": {"en": "FAST FOOD", "ko": "패스트푸드", "ja": "ファストフード", "es": "COMIDA RÁPIDA", "pt": "FAST FOOD", "de": "FAST FOOD", "fr": "FAST-FOOD"}, "items": [{"en": "PIZZA", "ko": "피자", "ja": "ピザ", "es": "PIZZA", "pt": "PIZZA", "de": "PIZZA", "fr": "PIZZA"}, {"en": "BURGER", "ko": "버거", "ja": "バーガー", "es": "HAMBURGUESA", "pt": "HAMBÚRGUER", "de": "BURGER", "fr": "BURGER"}, {"en": "TACO", "ko": "타코", "ja": "タコス", "es": "TACO", "pt": "TACO", "de": "TACO", "fr": "TACO"}, {"en": "HOT DOG", "ko": "핫도그", "ja": "ホットドッグ", "es": "PERRITO", "pt": "CACHORRO-QUENTE", "de": "HOTDOG", "fr": "HOT-DOG"}, {"en": "SANDWICH", "ko": "샌드위치", "ja": "サンドイッチ", "es": "SÁNDWICH", "pt": "SANDUÍCHE", "de": "SANDWICH", "fr": "SANDWICH"}]}, {"name": {"en": "SWEETS", "ko": "디저트", "ja": "スイーツ", "es": "DULCES", "pt": "DOCES", "de": "SÜSSES", "fr": "DOUCEURS"}, "items": [{"en": "CAKE", "ko": "케이크", "ja": "ケーキ", "es": "PASTEL", "pt": "BOLO", "de": "KUCHEN", "fr": "GÂTEAU"}, {"en": "COOKIE", "ko": "쿠키", "ja": "クッキー", "es": "GALLETA", "pt": "BISCOITO", "de": "KEKS", "fr": "COOKIE"}, {"en": "CHOCOLATE", "ko": "초콜릿", "ja": "チョコレート", "es": "CHOCOLATE", "pt": "CHOCOLATE", "de": "SCHOKOLADE", "fr": "CHOCOLAT"}, {"en": "POPSICLE", "ko": "아이스바", "ja": "アイスキャンディー", "es": "POLO", "pt": "PICOLÉ", "de": "EIS AM STIEL", "fr": "ESQUIMAU"}, {"en": "ICE CREAM", "ko": "아이스크림", "ja": "アイスクリーム", "es": "HELADO", "pt": "SORVETE", "de": "EISCREME", "fr": "GLACE"}]}, {"name": {"en": "ODDITIES", "ko": "별난 물건", "ja": "ふしぎな物", "es": "RAREZAS", "pt": "ESQUISITICES", "de": "KURIOSES", "fr": "CURIOSITÉS"}, "items": [{"en": "SOAP BAR", "ko": "비누", "ja": "石けん", "es": "JABÓN", "pt": "SABONETE", "de": "SEIFE", "fr": "SAVON"}, {"en": "CANDLE", "ko": "양초", "ja": "ろうそく", "es": "VELA", "pt": "VELA", "de": "KERZE", "fr": "BOUGIE"}, {"en": "GIFT BOX", "ko": "선물 상자", "ja": "プレゼント箱", "es": "REGALO", "pt": "PRESENTE", "de": "GESCHENK", "fr": "CADEAU"}, {"en": "TOY BLOCK", "ko": "장난감 블록", "ja": "積み木", "es": "BLOQUE", "pt": "BLOQUINHO", "de": "BAUKLOTZ", "fr": "CUBE"}, {"en": "SOCCER BALL", "ko": "축구공", "ja": "サッカーボール", "es": "BALÓN", "pt": "BOLA", "de": "FUSSBALL", "fr": "BALLON"}, {"en": "BOWLING PIN", "ko": "볼링 핀", "ja": "ボウリングピン", "es": "BOLO DE BOLERA", "pt": "PINO DE BOLICHE", "de": "KEGEL", "fr": "QUILLE"}, {"en": "PENCIL", "ko": "연필", "ja": "鉛筆", "es": "LÁPIZ", "pt": "LÁPIS", "de": "BLEISTIFT", "fr": "CRAYON"}, {"en": "TRAFFIC CONE", "ko": "러버콘", "ja": "カラーコーン", "es": "CONO", "pt": "CONE", "de": "LEITKEGEL", "fr": "CÔNE"}, {"en": "TOOTHPASTE", "ko": "치약", "ja": "歯みがき粉", "es": "PASTA DE DIENTES", "pt": "PASTA DE DENTE", "de": "ZAHNPASTA", "fr": "DENTIFRICE"}, {"en": "SODA CAN", "ko": "탄산 캔", "ja": "ジュース缶", "es": "LATA", "pt": "LATA", "de": "DOSE", "fr": "CANETTE"}, {"en": "DIAMOND", "ko": "다이아몬드", "ja": "ダイヤモンド", "es": "DIAMANTE", "pt": "DIAMANTE", "de": "DIAMANT", "fr": "DIAMANT"}]}];
+const EN = {};
+document.querySelectorAll('[data-i]').forEach(e => EN[e.dataset.i] = e.textContent);
+function renderSets(code) {
+  const box = document.getElementById('sets');
+  box.textContent = '';
+  for (const set of SETS) {
+    const div = document.createElement('div'); div.className = 'set';
+    const h = document.createElement('h3');
+    const name = document.createElement('b'); name.textContent = set.name[code] || set.name.en;
+    const count = document.createElement('span'); count.textContent = set.items.length;
+    h.append(name, count);
+    const ul = document.createElement('ul');
+    for (const item of set.items) { const li = document.createElement('li'); li.textContent = item[code] || item.en; ul.append(li); }
+    div.append(h, ul); box.append(div);
+  }
+}
+function apply(code) {
+  const t = COPY[code] || {};
+  document.documentElement.lang = code;
+  document.querySelectorAll('[data-i]').forEach(e => e.textContent = t[e.dataset.i] || EN[e.dataset.i]);
+  document.getElementById('lang').value = code;
+  renderSets(code);
+}
+let pick = '';
+try { pick = localStorage.getItem('half-lang') || ''; } catch (e) {}
+if (!pick) { const nav = (navigator.language || 'en').slice(0, 2); pick = (COPY[nav] || nav === 'en') ? nav : 'en'; }
 apply(pick);
-document.getElementById('lang').addEventListener('change',e=>{apply(e.target.value);try{localStorage.setItem('half-lang',e.target.value)}catch(x){}});
+document.getElementById('lang').addEventListener('change', e => {
+  apply(e.target.value);
+  try { localStorage.setItem('half-lang', e.target.value); } catch (x) {}
+});
 </script>
 </body>
 </html>
