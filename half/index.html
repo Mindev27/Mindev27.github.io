@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HALF! – Slice It In Half</title>
+<meta name="description" content="HALF! is a mobile game where you slice fruit, food and oddities exactly 50:50.">
+<meta property="og:title" content="HALF! – Slice It In Half">
+<meta property="og:description" content="How close can you get to a perfect 50 : 50?">
+<meta property="og:image" content="https://mindev27.github.io/half/icon.png">
+<link rel="icon" href="icon.png">
+<style>
+:root{--ink:#221250;--violet:#4a2a9e;--gold:#ffd640;--coral:#ff5e57;--paper:#ffffff;--soft:#f3efff;--text:#2b1b5e;--muted:#6b5b9a}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--paper:#1b1430;--soft:#251c40;--text:#eee8ff;--muted:#b9acdf}}
+*{box-sizing:border-box}
+body{margin:0;font:17px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--text);background:var(--paper)}
+header{background:linear-gradient(180deg,var(--violet),var(--ink));color:#fff;text-align:center;padding:48px 16px 40px}
+header img.icon{width:96px;height:96px;border-radius:22px;box-shadow:0 8px 24px rgba(0,0,0,.35)}
+h1{font-size:56px;line-height:1;margin:18px 0 6px;color:var(--coral);text-shadow:0 4px 0 var(--ink),0 0 0 #fff;letter-spacing:1px}
+.tag{font-size:20px;font-weight:700;margin:0 0 22px}
+.shot{width:min(320px,80vw);border-radius:22px;box-shadow:0 12px 32px rgba(0,0,0,.4)}
+.badges{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+.badge{display:inline-block;padding:12px 20px;border-radius:14px;background:#000;color:#fff;font-weight:700;text-decoration:none;min-width:170px}
+.badge.soon{opacity:.6;cursor:default}
+main{max-width:760px;margin:0 auto;padding:32px 16px 48px}
+ul.features{list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px}
+ul.features li{background:var(--soft);border-radius:16px;padding:14px 16px;font-weight:600}
+h2{font-size:22px;margin:32px 0 10px}
+footer{text-align:center;color:var(--muted);font-size:14px;padding:24px 16px 40px}
+footer a{color:inherit}
+select{font:inherit;padding:4px 8px;border-radius:8px}
+</style>
+</head>
+<body>
+<header>
+  <img class="icon" src="icon.png" alt="HALF! app icon">
+  <h1>HALF!</h1>
+  <p class="tag" data-i="tag">How close can you get to a perfect 50 : 50?</p>
+  <img class="shot" src="slice.gif" alt="A tomato sliced exactly in half" loading="lazy">
+  <div class="badges">
+    <!-- Replace href and drop the "soon" class once the store pages are live. -->
+    <a class="badge soon" id="play" data-i="play">Google Play – coming soon</a>
+    <a class="badge soon" id="ios" data-i="ios">App Store – coming soon</a>
+  </div>
+</header>
+<main>
+  <p data-i="intro">Hold, slide and release to bring the knife down. Every cut is measured by real volume, so a PERFECT really is half and half.</p>
+  <ul class="features">
+    <li data-i="f1">51 things to cut: fruit, sweets, kitchen classics and oddities</li>
+    <li data-i="f2">Twist stages: NO GUIDE, RUSH and WOBBLE</li>
+    <li data-i="f3">Collect sets and rank up to Master Chef</li>
+    <li data-i="f4">Unlock blades: Light Saber, Katana, Damascus…</li>
+    <li data-i="f5">Daily quests and a Daily Cut</li>
+    <li data-i="f6">Short sessions, play offline</li>
+  </ul>
+  <h2 data-i="supportTitle">Support</h2>
+  <p data-i="support">Questions or problems? Contact us through the support contact on the HALF! store listing.</p>
+</main>
+<footer>
+  <label><span data-i="lang">Language</span>
+    <select id="lang">
+      <option value="en">English</option><option value="ko">한국어</option><option value="ja">日本語</option><option value="es">Español</option>
+      <option value="pt">Português</option><option value="de">Deutsch</option><option value="fr">Français</option>
+    </select>
+  </label>
+  <p><a href="privacy.html" data-i="privacy">Privacy Policy</a> · © 2026 Min_27</p>
+</footer>
+<script>
+const T={
+ko:{tag:"정확히 50 : 50으로 자를 수 있나요?",play:"Google Play – 곧 출시",ios:"App Store – 곧 출시",intro:"누르고, 밀고, 떼면 칼이 내려갑니다. 모든 절단은 실제 부피로 측정돼서, PERFECT는 정말로 딱 반입니다.",f1:"자를 수 있는 51가지: 과일, 디저트, 주방 요리, 별난 물건",f2:"변형 스테이지: 가이드 없음, 러시, 흔들흔들",f3:"세트를 모으고 마스터 셰프까지 랭크업",f4:"칼 해금: 광선검, 카타나, 다마스커스…",f5:"일일 퀘스트와 데일리 컷",f6:"짧은 플레이, 오프라인 가능",supportTitle:"지원",support:"문의나 문제가 있으면 HALF! 스토어 페이지의 지원 연락처로 연락해 주세요.",lang:"언어",privacy:"개인정보처리방침"},
+ja:{tag:"どこまでパーフェクトな50 : 50に近づける？",play:"Google Play – 近日公開",ios:"App Store – 近日公開",intro:"長押しして、スライドして、離すとナイフが下ります。すべてのカットは実際の体積で計測。パーフェクトは本当にぴったり半分です。",f1:"切れるアイテムは51種類：果物、スイーツ、料理、ふしぎな物",f2:"ルールが変わるステージ：ガイドなし、ラッシュ、ゆらゆら",f3:"セットを集めてマスターシェフへ",f4:"ナイフを解放：ライトセーバー、刀、ダマスカス…",f5:"今日のクエストとデイリーカット",f6:"短時間で遊べて、オフラインでもOK",supportTitle:"サポート",support:"ご質問や不具合は、ストアページのサポート窓口までご連絡ください。",lang:"言語",privacy:"プライバシーポリシー"},
+es:{tag:"¿Qué tan cerca llegas al 50 : 50 perfecto?",play:"Google Play – muy pronto",ios:"App Store – muy pronto",intro:"Mantén, desliza y suelta para bajar el cuchillo. Cada corte se mide por volumen real: un PERFECTO es de verdad mitad y mitad.",f1:"51 cosas para cortar: frutas, dulces, cocina y rarezas",f2:"Niveles con giros: SIN GUÍA, PRISA y TEMBLOR",f3:"Completa sets y llega a Chef Maestro",f4:"Desbloquea cuchillos: Sable de luz, Katana, Damasco…",f5:"Misiones diarias y un Corte Diario",f6:"Partidas cortas, sin conexión",supportTitle:"Soporte",support:"¿Dudas o problemas? Escríbenos al contacto de soporte de la ficha de HALF! en la tienda.",lang:"Idioma",privacy:"Política de privacidad"},
+pt:{tag:"Quão perto você chega do 50 : 50 perfeito?",play:"Google Play – em breve",ios:"App Store – em breve",intro:"Segure, deslize e solte para descer a faca. Cada corte é medido pelo volume real: um PERFEITO é mesmo metade e metade.",f1:"51 itens para cortar: frutas, doces, cozinha e esquisitices",f2:"Fases com reviravoltas: SEM GUIA, PRESSA e BALANÇO",f3:"Complete conjuntos e chegue a Chef Mestre",f4:"Libere facas: Sabre de luz, Katana, Damasco…",f5:"Missões diárias e um Corte Diário",f6:"Partidas rápidas, jogue offline",supportTitle:"Suporte",support:"Dúvidas ou problemas? Fale com a gente pelo contato de suporte da página do HALF! na loja.",lang:"Idioma",privacy:"Política de privacidade"},
+de:{tag:"Wie nah kommst du an perfekte 50 : 50?",play:"Google Play – bald verfügbar",ios:"App Store – bald verfügbar",intro:"Halten, ziehen, loslassen – und das Messer fällt. Jeder Schnitt wird nach echtem Volumen gemessen: PERFEKT heißt wirklich halb und halb.",f1:"51 Dinge zum Schneiden: Obst, Süßes, Küche und Kurioses",f2:"Stufen mit neuen Regeln: OHNE HILFE, EILE und WACKELN",f3:"Sets sammeln und zum Meisterkoch aufsteigen",f4:"Messer freischalten: Lichtschwert, Katana, Damaszener…",f5:"Tägliche Aufgaben und ein Tagesschnitt",f6:"Kurze Runden, offline spielbar",supportTitle:"Support",support:"Fragen oder Probleme? Nutze den Support-Kontakt auf der Store-Seite von HALF!.",lang:"Sprache",privacy:"Datenschutzerklärung"},
+fr:{tag:"Jusqu'où iras-tu vers le 50 : 50 parfait ?",play:"Google Play – bientôt",ios:"App Store – bientôt",intro:"Appuie, glisse et relâche pour abaisser le couteau. Chaque coupe est mesurée au volume réel : un PARFAIT, c'est vraiment moitié-moitié.",f1:"51 objets à couper : fruits, douceurs, cuisine et curiosités",f2:"Niveaux à twist : SANS GUIDE, RUSH et BASCULE",f3:"Complète des sets et deviens Grand Chef",f4:"Débloque des couteaux : Sabre laser, Katana, Damas…",f5:"Quêtes du jour et Coupe du jour",f6:"Parties courtes, hors ligne",supportTitle:"Support",support:"Une question ou un problème ? Contacte-nous via le contact support de la fiche HALF! sur le store.",lang:"Langue",privacy:"Politique de confidentialité"}
+};
+const EN={};document.querySelectorAll('[data-i]').forEach(e=>EN[e.dataset.i]=e.textContent);
+function apply(code){const t=T[code]||EN;document.documentElement.lang=code;document.querySelectorAll('[data-i]').forEach(e=>e.textContent=t[e.dataset.i]||EN[e.dataset.i]);document.getElementById('lang').value=code;}
+let pick='en';try{pick=localStorage.getItem('half-lang')||''}catch(e){}
+if(!pick){const nav=(navigator.language||'en').slice(0,2);pick=T[nav]?nav:'en'}
+apply(pick);
+document.getElementById('lang').addEventListener('change',e=>{apply(e.target.value);try{localStorage.setItem('half-lang',e.target.value)}catch(x){}});
+</script>
+</body>
+</html>
